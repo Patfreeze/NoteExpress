@@ -1,0 +1,8 @@
+C:\Users\Patrick\documents\visual studio 2010\Projects\NotepadExpress\NotepadExpress\bin\Release\NoteExpress.exe
+C:\Users\Patrick\documents\visual studio 2010\Projects\NotepadExpress\NotepadExpress\bin\Release\NoteExpress.pdb
+C:\Users\Patrick\documents\visual studio 2010\Projects\NotepadExpress\NotepadExpress\obj\x86\Release\NotepadExpress.Form1.resources
+C:\Users\Patrick\documents\visual studio 2010\Projects\NotepadExpress\NotepadExpress\obj\x86\Release\NotepadExpress.FormAbout.resources
+C:\Users\Patrick\documents\visual studio 2010\Projects\NotepadExpress\NotepadExpress\obj\x86\Release\NoteExpress.Properties.Resources.resources
+C:\Users\Patrick\documents\visual studio 2010\Projects\NotepadExpress\NotepadExpress\obj\x86\Release\NotepadExpress.csproj.GenerateResource.Cache
+C:\Users\Patrick\documents\visual studio 2010\Projects\NotepadExpress\NotepadExpress\obj\x86\Release\NoteExpress.exe
+C:\Users\Patrick\documents\visual studio 2010\Projects\NotepadExpress\NotepadExpress\obj\x86\Release\NoteExpress.pdb
