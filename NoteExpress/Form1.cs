@@ -22,7 +22,7 @@ namespace NotepadExpress
         private Timer CloseAlreadyNoteTimer;
         private String sUserDocPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         private int iFunnyFac = 0;
-        private int iDelay = 750;
+        private int iDelay = 500; // Delay after writting text
         
         public Form1(string[] args)
         {
@@ -34,7 +34,7 @@ namespace NotepadExpress
 
             sCurrentNamefile = date1.ToString("yyyy-MM-dd_HHmmss") + "";
             this.Text = sCurrentNamefile + " - " + sProgramName;
-            this.toolStripStatusLabel1.Text = "Note Express - Best express note never made :P ";
+            toolStripStatusLabel1.Text = "Note Express - " + getNextFunnyFact();
 
             if (args.Length != 0)
             {
@@ -52,6 +52,21 @@ namespace NotepadExpress
             }
 
         }
+
+        /**
+         * MAKE SOME SHORTCUT BY HAND
+         * */
+        /*
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.N))
+            {
+                this.newFile();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+         **/
 
         /* GET FILE NAME */
         public String getFileName() {
@@ -81,8 +96,6 @@ namespace NotepadExpress
             }
         }
 
-
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -102,6 +115,9 @@ namespace NotepadExpress
             formAbout.Show();
         }
 
+        /**
+         * Find the good path for the ProgramFiles x86 
+         **/
         static string ProgramFilesx86()
         {
             if (8 == IntPtr.Size
@@ -113,18 +129,15 @@ namespace NotepadExpress
             return Environment.GetEnvironmentVariable("ProgramFiles");
         }
 
+        private void newFile() {
+            System.Diagnostics.Process noteExpress = new System.Diagnostics.Process();
+            noteExpress.StartInfo.FileName = ProgramFilesx86() + sDefaultPath + "noteexpress.exe";
+            noteExpress.Start();
+        }
+
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Console.WriteLine();
-            // TODO: Create a New Instance of
-            System.Diagnostics.Process noteExpress = new System.Diagnostics.Process();
-            noteExpress.StartInfo.FileName = ProgramFilesx86()+sDefaultPath+"noteexpress.exe";
-            //noteExpress.StartInfo.Arguments = " C:\\craftbukkit\\bukkit.yml";
-            noteExpress.Start();
-
-            //System.Diagnostics.Process.Start("noteexpress.exe");
-            //Form1 formNew = new Form1(false);
-            //formNew.Show();
+            this.newFile();
         }
 
         private void CloseAlreadyNoteTimer_Tick(object sender, EventArgs e)
@@ -167,26 +180,26 @@ namespace NotepadExpress
             SearchTextBoxTimer.Stop();
             SearchTextBoxTimer.Dispose();
             SearchTextBoxTimer = null;
-            iDelay = 750;
-
-            var dateSave = DateTime.Now;
-            toolStripStatusLabel1.Text = dateSave.ToString("yyyy-MM-dd HH:mm:ss") + " | Saving at " + getPathFile();
+            iDelay = 500;
+            toolStripStatusLabel1.Text = "Saving at " + getPathFile();
 
         }
 
         private String getNextFunnyFact() {
 
             String[] a_sFunnyFac = {
-                "The power of a simple note, is to be keep it somewhere easy to find",
+                "Best express note never made :P",
+                "The power of a simple note, is to be keep it somewhere easy to find...",
                 "Do or do not, there is no try...",
                 "Dont forget to save this note! To late I saved for you. XD",
                 "Do you remember the first note you write?",
                 "Remove the pain in the ice! Yes, ice! I dont want bad word here.",
-                "Look around, your note is somewhere."
+                "Look around, your note is somewhere.",
+                "Oh! It's you again! \\o/"
             };
 
-            iFunnyFac = iFunnyFac + 1;
-            //Console.WriteLine("Next note: " + iFunnyFac);
+            Random rnd = new Random();
+            iFunnyFac = rnd.Next(a_sFunnyFac.Length);
 
             if (iFunnyFac >= a_sFunnyFac.Length) {
                 iFunnyFac = 0;
@@ -203,8 +216,9 @@ namespace NotepadExpress
                 if (SearchTextBoxTimer.Interval < iDelay)
                 {
                     SearchTextBoxTimer.Interval += iDelay;
-                    iDelay = iDelay + 600;
+                    iDelay = iDelay + 500;
                     //Console.WriteLine("Delaying..." + SearchTextBoxTimer.Interval);
+                    toolStripStatusLabel1.Text = "Note Express - " + getNextFunnyFact();
                 }
             }
             else
@@ -283,6 +297,9 @@ namespace NotepadExpress
 
         }
 
+        /**
+          * Handle the click on Save As
+          **/
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -295,9 +312,45 @@ namespace NotepadExpress
             {
                 Console.WriteLine("Save as Completed");
                 richTextBox1.SaveFile(saveFileDialog1.FileName, RichTextBoxStreamType.PlainText);
-                var dateSave = DateTime.Now;
-                toolStripStatusLabel1.Text = dateSave.ToString("yyyy-MM-dd HH:mm:ss") + " | Saving at " + saveFileDialog1.FileName;
+                toolStripStatusLabel1.Text = "Saving at " + saveFileDialog1.FileName;
             }
+        }
+
+        /**
+         * This will remove all style when copy/paste in richtextbox.
+         **/
+        private void richTextBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                richTextBox1.Text += (string)Clipboard.GetData("Text");
+                e.Handled = true;
+            }
+        }
+
+        private void deleteExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            String sPathDelete = sOpenFile;
+            if (sOpenFile == "")
+            {
+                sPathDelete = getPathFile();
+            }
+
+            // This will delete the current note and exit
+            DialogResult result = MessageBox.Show(
+                "Do you really want to delete this note '" + sPathDelete + "' ?",
+                "WARNING",
+                MessageBoxButtons.YesNo
+            );
+            if (result == DialogResult.Yes)
+            {
+                // We look for the file and delete it Then close
+                File.Delete(sPathDelete);
+             }
+ 
+            this.Dispose();
         }
     }
 }

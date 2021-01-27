@@ -22,7 +22,7 @@ namespace NotepadExpress
                           "Note Express",
                           Application.ProductVersion,
                           "Made by Patrick Frenette",
-                          "https://www.amedacier.com",
+                          "https://github.com/Patfreeze/NoteExpress",
                           Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments).Replace("\\","\\\\") + "\\\\NoteExpress");
 
             this.richTextBox1.SelectionAlignment = HorizontalAlignment.Center;
