@@ -324,7 +324,9 @@ namespace NotepadExpress
             
             if (e.Control && e.KeyCode == Keys.V)
             {
-                richTextBox1.Text += (string)Clipboard.GetData("Text");
+         
+                DataFormats.Format plaintext_format = DataFormats.GetFormat(DataFormats.Text);
+                richTextBox1.Paste(plaintext_format);
                 e.Handled = true;
             }
         }
@@ -342,7 +344,8 @@ namespace NotepadExpress
             DialogResult result = MessageBox.Show(
                 "Do you really want to delete this note '" + sPathDelete + "' ?",
                 "WARNING",
-                MessageBoxButtons.YesNo
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Exclamation
             );
             if (result == DialogResult.Yes)
             {
