@@ -28,6 +28,8 @@ namespace NotepadExpress
         {
             InitializeComponent();
 
+            richTextBox1.Font = new Font(FontFamily.GenericMonospace, richTextBox1.Font.Size);
+
             System.IO.Directory.CreateDirectory(sUserDocPath + sDefaultPath);
 
             var date1 = DateTime.Now;
@@ -241,7 +243,9 @@ namespace NotepadExpress
 
         private void addFileToText(string file) {
             this.Text = this.sOpenFile + " - " + sProgramName;
-            string[] a_readLines = File.ReadAllLines(file);
+            //Console.WriteLine(Encoding.Default.WebName);
+
+            string[] a_readLines = File.ReadAllLines(file, Encoding.GetEncoding(Encoding.Default.WebName));
             this.richTextBox1.Lines = a_readLines;
         }
 
@@ -250,7 +254,9 @@ namespace NotepadExpress
             //Console.WriteLine("File name: "+files[0]);
             this.sOpenFile = files[0];
             this.Text = this.sOpenFile + " - " + sProgramName;
-            string[] a_readLines = File.ReadAllLines(files[0]);
+            //Console.WriteLine(Encoding.Default.WebName);
+
+            string[] a_readLines = File.ReadAllLines(files[0], Encoding.GetEncoding(Encoding.Default.WebName));
             //Console.WriteLine("FirstLine: "+a_readLines[0]);
             this.richTextBox1.Lines = a_readLines;
             //this.richTextBox1.Select(this.richTextBox1.Text.Length - 1, 0);
