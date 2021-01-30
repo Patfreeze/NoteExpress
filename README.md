@@ -12,4 +12,4 @@ You can use command line also to open a file just like this :
 ```
 C:\Program Files (x86)\NoteExpress\NoteExpress.exe "c:\my\path\to\a\file.txt"
 ```
-Is it usefull, I dont know, but this command line exist lol. Maybe if someone ask I will try to make it callable anywhere.
+Is this useful! I dont know but this command line exists lol. Maybe if someone asks, I'll try to make it callable from anywhere.
