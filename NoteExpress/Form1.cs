@@ -46,7 +46,7 @@ namespace NotepadExpress
                     Console.WriteLine("args[{0}] == {1}", i, args[i]);
                 }
                  */
-                // args[0] = chemin vers fichier
+                // args[0] = path to file
 
                 sOpenFile = args[0];
                 this.Text = sOpenFile + " - " + sProgramName;
@@ -156,7 +156,7 @@ namespace NotepadExpress
                         if (!list.Contains(myProcess[z].MainWindowTitle))
                         {
                             list.Add(myProcess[z].MainWindowTitle);
-                            Console.WriteLine("Closing: " + myProcess[z].MainWindowTitle);
+                            //Console.WriteLine("Closing: " + myProcess[z].MainWindowTitle);
                             myProcess[z].CloseMainWindow();
                         }
                     }
@@ -287,7 +287,7 @@ namespace NotepadExpress
 
             foreach (FileInfo file in Files)
             {
-                Console.WriteLine(file.Name);
+                //Console.WriteLine(file.Name);
                 System.Diagnostics.Process noteExpress = new System.Diagnostics.Process();
                 noteExpress.StartInfo.FileName = ProgramFilesx86() + sDefaultPath + "noteexpress.exe";
                 noteExpress.StartInfo.Arguments = " "+this.getFolderPath()+file.Name;
@@ -316,7 +316,7 @@ namespace NotepadExpress
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                Console.WriteLine("Save as Completed");
+                //Console.WriteLine("Save as Completed");
                 richTextBox1.SaveFile(saveFileDialog1.FileName, RichTextBoxStreamType.PlainText);
                 toolStripStatusLabel1.Text = "Saving at " + saveFileDialog1.FileName;
             }
@@ -360,6 +360,39 @@ namespace NotepadExpress
              }
  
             this.Dispose();
+        }
+
+        private String getCurrentDateTime(Boolean bShowTime = true) { 
+            var date1 = DateTime.Now;
+
+            //TODO: Have a setting to get the date as the user what?
+            // Maybe a dropdown menu with some formats
+
+            if(bShowTime) {
+                return date1.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            return date1.ToString("yyyy-MM-dd");
+        }
+
+        private void addStringAtCurrentSelection(String sStr) {
+            richTextBox1.SelectionStart += richTextBox1.SelectionLength;
+            richTextBox1.SelectionLength = 0;
+            richTextBox1.SelectedText = sStr;
+        }
+
+        private void addDateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addStringAtCurrentSelection(getCurrentDateTime());
+        }
+
+        private void addDateToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            addStringAtCurrentSelection(getCurrentDateTime(false));
+        }
+
+        private void addTitleDateTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addStringAtCurrentSelection("====================\n" + getCurrentDateTime() + "\n====================\n");
         }
     }
 }

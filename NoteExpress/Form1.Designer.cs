@@ -35,6 +35,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -42,7 +43,10 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.deleteExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addDateToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.addTitleDateTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -53,6 +57,7 @@
             this.menuStrip1.BackColor = System.Drawing.SystemColors.ControlDark;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.optionsToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -106,6 +111,14 @@
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // deleteExitToolStripMenuItem
+            // 
+            this.deleteExitToolStripMenuItem.Name = "deleteExitToolStripMenuItem";
+            this.deleteExitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.deleteExitToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.deleteExitToolStripMenuItem.Text = "Delete+Exit";
+            this.deleteExitToolStripMenuItem.Click += new System.EventHandler(this.deleteExitToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -174,13 +187,42 @@
             this.openFileDialog1.Tag = "";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
-            // deleteExitToolStripMenuItem
+            // optionsToolStripMenuItem
             // 
-            this.deleteExitToolStripMenuItem.Name = "deleteExitToolStripMenuItem";
-            this.deleteExitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.deleteExitToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.deleteExitToolStripMenuItem.Text = "Delete+Exit";
-            this.deleteExitToolStripMenuItem.Click += new System.EventHandler(this.deleteExitToolStripMenuItem_Click);
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addDateToolStripMenuItem,
+            this.addDateToolStripMenuItem1,
+            this.addTitleDateTimeToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // addDateToolStripMenuItem
+            // 
+            this.addDateToolStripMenuItem.Name = "addDateToolStripMenuItem";
+            this.addDateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.addDateToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+            this.addDateToolStripMenuItem.Text = "Add Date-Time";
+            this.addDateToolStripMenuItem.Click += new System.EventHandler(this.addDateToolStripMenuItem_Click);
+            // 
+            // addDateToolStripMenuItem1
+            // 
+            this.addDateToolStripMenuItem1.Name = "addDateToolStripMenuItem1";
+            this.addDateToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.T)));
+            this.addDateToolStripMenuItem1.Size = new System.Drawing.Size(274, 22);
+            this.addDateToolStripMenuItem1.Text = "Add Date";
+            this.addDateToolStripMenuItem1.Click += new System.EventHandler(this.addDateToolStripMenuItem1_Click);
+            // 
+            // addTitleDateTimeToolStripMenuItem
+            // 
+            this.addTitleDateTimeToolStripMenuItem.Name = "addTitleDateTimeToolStripMenuItem";
+            this.addTitleDateTimeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.T)));
+            this.addTitleDateTimeToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+            this.addTitleDateTimeToolStripMenuItem.Text = "Add Title Date-Time";
+            this.addTitleDateTimeToolStripMenuItem.Click += new System.EventHandler(this.addTitleDateTimeToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -221,6 +263,10 @@
         private System.Windows.Forms.ToolStripMenuItem openAllToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem deleteExitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addDateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addDateToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem addTitleDateTimeToolStripMenuItem;
     }
 }
 
