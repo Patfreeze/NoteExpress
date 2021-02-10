@@ -11,6 +11,8 @@ using System.Diagnostics;
 
 namespace NotepadExpress
 {
+    
+
     public partial class Form1 : Form
     {
 
@@ -36,7 +38,7 @@ namespace NotepadExpress
 
             sCurrentNamefile = date1.ToString("yyyy-MM-dd_HHmmss") + "";
             this.Text = sCurrentNamefile + " - " + sProgramName;
-            toolStripStatusLabel1.Text = "Note Express - " + getNextFunnyFact();
+            updateFunnyFact();
 
             if (args.Length != 0)
             {
@@ -55,6 +57,10 @@ namespace NotepadExpress
 
         }
 
+        private void updateFunnyFact()
+        {
+            toolStripStatusLabel1.Text = "Note Express - " + getNextFunnyFact();
+        }
         /**
          * MAKE SOME SHORTCUT BY HAND
          * */
@@ -190,14 +196,24 @@ namespace NotepadExpress
         private String getNextFunnyFact() {
 
             String[] a_sFunnyFac = {
-                "Best express note never made :P",
-                "The power of a simple note, is to be keep it somewhere easy to find...",
+                "Best express note never made. :P",
+                "The power of a note, is to be keep it somewhere easy to find...",
                 "Do or do not, there is no try...",
                 "Dont forget to save this note! To late I saved for you. XD",
                 "Do you remember the first note you write?",
                 "Remove the pain in the ice! Yes, ice! I dont want bad word here.",
                 "Look around, your note is somewhere.",
-                "Oh! It's you again! \\o/"
+                "Oh! It's you again! \\o/",
+                "Wonderful, My note is there!",
+                "Simple way, simple think!",
+                "Notamment! You need me again.",
+                "Hey! Don't forget to take note.",
+                "You think... You write, I saved!",
+                "Face the future, take a note.",
+                "Bon appetit!",
+                "POWER EXPRESS",
+                "Better than an Expresso.",
+                "Note today! Note tomorrow."
             };
 
             Random rnd = new Random();
@@ -220,7 +236,7 @@ namespace NotepadExpress
                     SearchTextBoxTimer.Interval += iDelay;
                     iDelay = iDelay + 500;
                     //Console.WriteLine("Delaying..." + SearchTextBoxTimer.Interval);
-                    toolStripStatusLabel1.Text = "Note Express - " + getNextFunnyFact();
+                    updateFunnyFact();
                 }
             }
             else
@@ -231,7 +247,7 @@ namespace NotepadExpress
                 SearchTextBoxTimer.Interval = 500;
                 SearchTextBoxTimer.Start();
 
-                toolStripStatusLabel1.Text = "Note Express - " + getNextFunnyFact();
+                updateFunnyFact();
             }
         }
 
@@ -279,7 +295,7 @@ namespace NotepadExpress
 
         private void openAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // TODO: Open All in the NoteExpress folder
+            // Open All in the NoteExpress folder
             DirectoryInfo d = new DirectoryInfo(this.getFolderPath());
             FileInfo[] Files = d.GetFiles("*.txt"); //Getting Text files
 
@@ -299,6 +315,11 @@ namespace NotepadExpress
             CloseAlreadyNoteTimer.Interval = 500;
             CloseAlreadyNoteTimer.Start();
 
+            // We dispose the current note if nothing in
+            if (richTextBox1.TextLength == 0)
+            {
+                this.Dispose();
+            }
 
 
         }
@@ -394,5 +415,55 @@ namespace NotepadExpress
         {
             addStringAtCurrentSelection("====================\n" + getCurrentDateTime() + "\n====================\n");
         }
+
+        private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            //open link with default application
+            Process.Start(e.LinkText);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //at window load or at the constructor
+            this.Activated += OnWindowActivated;
+        }
+
+        [System.Runtime.InteropServices.DllImport("User32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr handle);
+        [System.Runtime.InteropServices.DllImport("User32.dll")]
+        private static extern bool ShowWindow(IntPtr handle, int nCmdShow);
+        [System.Runtime.InteropServices.DllImport("User32.dll")]
+        private static extern bool IsIconic(IntPtr handle);
+
+        const int SW_RESTORE = 9;
+
+        private void OnWindowActivated(object sender, EventArgs e)
+        {
+            // Call when we focused on NoteExpress
+            updateFunnyFact();
+
+        }
+
+        private void focusAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process[] processName = Process.GetProcessesByName("NoteExpress");
+            if (processName.Length != 0)
+            {
+                //Set foreground window
+                for (int i = 0; i <processName.Length; i++ )
+                {
+                    IntPtr handle = processName[i].MainWindowHandle;
+                    if (IsIconic(handle))
+                    {
+                        ShowWindow(handle, SW_RESTORE);
+                    }
+
+                    SetForegroundWindow(handle);
+                }
+
+            }
+        }
+
+        
     }
 }
