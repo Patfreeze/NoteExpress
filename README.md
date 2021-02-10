@@ -13,3 +13,7 @@ You can use command line also to open a file just like this :
 C:\Program Files (x86)\NoteExpress\NoteExpress.exe "c:\my\path\to\a\file.txt"
 ```
 Is this useful! I dont know but this command line exists lol. Maybe if someone asks, I'll try to make it callable from anywhere.
+
+# How to install
+Just download the installer at https://github.com/Patfreeze/NoteExpress/tree/master/installer
+
