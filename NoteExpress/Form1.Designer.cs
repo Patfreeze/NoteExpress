@@ -34,7 +34,9 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.focusAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,8 +49,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.focusAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -107,6 +107,15 @@
             this.openAllToolStripMenuItem.Text = "Open All";
             this.openAllToolStripMenuItem.Click += new System.EventHandler(this.openAllToolStripMenuItem_Click);
             // 
+            // focusAllToolStripMenuItem
+            // 
+            this.focusAllToolStripMenuItem.Name = "focusAllToolStripMenuItem";
+            this.focusAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.F)));
+            this.focusAllToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.focusAllToolStripMenuItem.Text = "Focus All";
+            this.focusAllToolStripMenuItem.Click += new System.EventHandler(this.focusAllToolStripMenuItem_Click);
+            // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
@@ -115,6 +124,11 @@
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
             // 
             // deleteExitToolStripMenuItem
             // 
@@ -210,6 +224,7 @@
             this.richTextBox1.AcceptsTab = true;
             this.richTextBox1.BackColor = System.Drawing.SystemColors.Window;
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox1.DetectUrls = false;
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -228,20 +243,6 @@
             this.openFileDialog1.Filter = "All Files|*.*";
             this.openFileDialog1.Tag = "";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
-            // 
-            // focusAllToolStripMenuItem
-            // 
-            this.focusAllToolStripMenuItem.Name = "focusAllToolStripMenuItem";
-            this.focusAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.F)));
-            this.focusAllToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.focusAllToolStripMenuItem.Text = "Focus All";
-            this.focusAllToolStripMenuItem.Click += new System.EventHandler(this.focusAllToolStripMenuItem_Click);
             // 
             // Form1
             // 

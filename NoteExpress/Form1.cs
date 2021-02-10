@@ -213,7 +213,9 @@ namespace NotepadExpress
                 "Bon appetit!",
                 "POWER EXPRESS",
                 "Better than an Expresso.",
-                "Note today! Note tomorrow."
+                "Note today! Note tomorrow.",
+                "Better than your wife... Na!",
+                "Throw new... Note"
             };
 
             Random rnd = new Random();
@@ -416,12 +418,14 @@ namespace NotepadExpress
             addStringAtCurrentSelection("====================\n" + getCurrentDateTime() + "\n====================\n");
         }
 
+        
         private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
         {
+            // I've decided to remove this feature. Hate this one :P
             //open link with default application
-            Process.Start(e.LinkText);
+            //Process.Start(e.LinkText);
         }
-
+  
         private void Form1_Load(object sender, EventArgs e)
         {
             //at window load or at the constructor
