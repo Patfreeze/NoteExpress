@@ -5,7 +5,9 @@ This is a notepad like to automatically save notes. A small project to understan
 ***Open All*** menu, in a single click, will open all notes in the folder ***/Documents/NoteExpress***.
 > Note: That will open only files with the extention ***.txt***.
 
-***Delete+Exit*** menu, will destroy the file before exit the application. So be carefull if you open a text file with it
+***Focus All*** menu, will bring all notes instances in front of other windows.
+
+***Delete+Exit*** menu, will destroy the file before exit the application. So be carefull if you open a text file with it.
 
 # Command Line
 You can use command line also to open a file just like this :
