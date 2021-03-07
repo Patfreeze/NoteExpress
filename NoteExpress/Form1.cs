@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using NoteExpress;
 
 namespace NotepadExpress
 {
@@ -42,18 +43,68 @@ namespace NotepadExpress
 
             if (args.Length != 0)
             {
+                
                 /*
                 for (int i = 0; i < args.Length; i++)
                 {
                     Console.WriteLine("args[{0}] == {1}", i, args[i]);
                 }
-                 */
+                 **/
+                
                 // args[0] = path to file
 
                 sOpenFile = args[0];
                 this.Text = sOpenFile + " - " + sProgramName;
                 addFileToText(args[0]);
             }
+
+            // Check the preference if is on openAll
+            ClassPreference classPreference = new ClassPreference();
+            classPreference.loadFilePreference();
+
+            // We open All if we have on one process
+            //var myProcess = Process.GetProcessesByName("NoteExpress");
+            var myProcess = Process.GetProcesses();
+
+            int iCount = 0;
+            for (int i = 0; i < myProcess.Length; i++) {
+                if(myProcess[i].MainWindowTitle.ToLower().Contains("note express")) {
+                    iCount++;
+                }
+            }
+
+            // If so open All Now
+            //Console.WriteLine("Process: "+myProcess.Length);
+            //Console.WriteLine("Process Note: "+iCount);
+
+            if (iCount == 0 && classPreference.getOpenAllAtStart())
+            {
+                openAllNote(false);
+                //Console.WriteLine("OPEN ALL: " + iCount);
+            }
+
+            // Do we add Date in note ?
+            if (richTextBox1.TextLength == 0)
+            {
+                switch(classPreference.getNewNoteChoice()) {
+                    case "Add Date-Time":
+                        addStringAtCurrentSelection(getCurrentDateTime() + "\n");
+                        break;
+
+                    case "Add Date":
+                        addStringAtCurrentSelection(getCurrentDateTime()+"\n");
+                        break;
+
+                    case "Add Title Date-Time":
+                        addStringAtCurrentSelection("====================\n" + getCurrentDateTime() + "\n====================\n");
+                        break;
+
+                    default:
+                        // Nothing to do
+                        break;
+                }
+            }
+
 
         }
 
@@ -215,7 +266,8 @@ namespace NotepadExpress
                 "Better than an Expresso.",
                 "Note today! Note tomorrow.",
                 "Better than your wife... Na!",
-                "Throw new... Note"
+                "Throw new... Note",
+                "Take a little snack!"
             };
 
             Random rnd = new Random();
@@ -295,20 +347,17 @@ namespace NotepadExpress
             return sUserDocPath + sDefaultPath;
         }
 
-        private void openAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void openAllNote(Boolean bCloseCurrent) {
             // Open All in the NoteExpress folder
             DirectoryInfo d = new DirectoryInfo(this.getFolderPath());
             FileInfo[] Files = d.GetFiles("*.txt"); //Getting Text files
-
-
 
             foreach (FileInfo file in Files)
             {
                 //Console.WriteLine(file.Name);
                 System.Diagnostics.Process noteExpress = new System.Diagnostics.Process();
                 noteExpress.StartInfo.FileName = ProgramFilesx86() + sDefaultPath + "noteexpress.exe";
-                noteExpress.StartInfo.Arguments = " "+this.getFolderPath()+file.Name;
+                noteExpress.StartInfo.Arguments = " " + this.getFolderPath() + file.Name;
                 noteExpress.Start();
             }
 
@@ -318,12 +367,16 @@ namespace NotepadExpress
             CloseAlreadyNoteTimer.Start();
 
             // We dispose the current note if nothing in
-            if (richTextBox1.TextLength == 0)
+            if (richTextBox1.TextLength == 0 && bCloseCurrent)
             {
                 this.Dispose();
             }
+        }
 
-
+        private void openAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Open All in the NoteExpress folder
+            openAllNote(true);
         }
 
         /**
@@ -466,6 +519,13 @@ namespace NotepadExpress
                 }
 
             }
+        }
+
+        private void preferenceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //TODO: Open preference
+            FormPreference formPreference = new FormPreference();
+            formPreference.Show();
         }
 
         

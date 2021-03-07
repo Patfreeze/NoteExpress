@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace NotepadExpress
 {
@@ -28,6 +29,12 @@ namespace NotepadExpress
             this.richTextBox1.SelectionAlignment = HorizontalAlignment.Center;
             //this.richTextBox1.SelectionStart = this.richTextBox1.TextLength;
             this.richTextBox1.SelectedRtf = rtf;
+        }
+
+        private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            //open link with default application
+            Process.Start(e.LinkText);
         }
     }
 }

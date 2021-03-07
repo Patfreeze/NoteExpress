@@ -49,6 +49,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.preferenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -75,6 +77,8 @@
             this.openAllToolStripMenuItem,
             this.focusAllToolStripMenuItem,
             this.saveAsToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.preferenceToolStripMenuItem,
             this.toolStripSeparator2,
             this.deleteExitToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -244,6 +248,19 @@
             this.openFileDialog1.Tag = "";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
+            // preferenceToolStripMenuItem
+            // 
+            this.preferenceToolStripMenuItem.Name = "preferenceToolStripMenuItem";
+            this.preferenceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.preferenceToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.preferenceToolStripMenuItem.Text = "Preference";
+            this.preferenceToolStripMenuItem.Click += new System.EventHandler(this.preferenceToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(191, 6);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -290,6 +307,8 @@
         private System.Windows.Forms.ToolStripMenuItem addTitleDateTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem focusAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem preferenceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

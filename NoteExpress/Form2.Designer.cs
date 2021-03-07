@@ -34,7 +34,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.ForeColor = System.Drawing.SystemColors.InfoText;
@@ -44,6 +44,7 @@
             this.richTextBox1.Size = new System.Drawing.Size(491, 215);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
+            this.richTextBox1.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
             // 
             // FormAbout
             // 
@@ -56,7 +57,7 @@
             this.MinimumSize = new System.Drawing.Size(300, 220);
             this.Name = "FormAbout";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "About";
+            this.Text = "NoteExpress: About";
             this.Load += new System.EventHandler(this.FormAbout_Load);
             this.ResumeLayout(false);
 

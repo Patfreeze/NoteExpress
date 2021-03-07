@@ -6,3 +6,4 @@ C:\Users\Patrick\Documents\Visual Studio 2010\Projects\noteexpress\NoteExpress\o
 C:\Users\Patrick\Documents\Visual Studio 2010\Projects\noteexpress\NoteExpress\obj\x86\Debug\NotepadExpress.FormAbout.resources
 C:\Users\Patrick\Documents\Visual Studio 2010\Projects\noteexpress\NoteExpress\obj\x86\Debug\NoteExpress.Properties.Resources.resources
 C:\Users\Patrick\Documents\Visual Studio 2010\Projects\noteexpress\NoteExpress\obj\x86\Debug\NoteExpress.csproj.GenerateResource.Cache
+C:\Users\Patrick\Documents\Visual Studio 2010\Projects\noteexpress\NoteExpress\obj\x86\Debug\NoteExpress.FormPreference.resources
