@@ -8,7 +8,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 using NoteExpress;
+
+
 
 namespace NotepadExpress
 {
@@ -16,6 +20,22 @@ namespace NotepadExpress
 
     public partial class Form1 : Form
     {
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [System.Runtime.InteropServices.DllImport("User32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr handle);
+
+        [System.Runtime.InteropServices.DllImport("User32.dll")]
+        private static extern bool IsIconic(IntPtr handle);
+
+        const int SW_RESTORE = 9;
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
 
         public String sProgramName = "Note Express";
         public String sDefaultPath = "\\NoteExpress\\";
@@ -32,7 +52,6 @@ namespace NotepadExpress
             InitializeComponent();
 
             richTextBox1.Font = new Font(FontFamily.GenericMonospace, richTextBox1.Font.Size);
-
             System.IO.Directory.CreateDirectory(sUserDocPath + sDefaultPath);
 
             var date1 = DateTime.Now;
@@ -104,6 +123,15 @@ namespace NotepadExpress
                         break;
                 }
             }
+
+            // handle the console show/hide
+            var handle = GetConsoleWindow();
+
+            // Hide the console
+            ShowWindow(handle, SW_HIDE);
+
+            // Show the console
+            //ShowWindow(handle, SW_SHOW);
 
 
         }
@@ -241,6 +269,7 @@ namespace NotepadExpress
             SearchTextBoxTimer = null;
             iDelay = 500;
             toolStripStatusLabel1.Text = "Saving at " + getPathFile();
+            outputTextInTitle();
 
         }
 
@@ -249,7 +278,7 @@ namespace NotepadExpress
             String[] a_sFunnyFac = {
                 "Best express note never made. :P",
                 "The power of a note, is to be keep it somewhere easy to find...",
-                "Do or do not, there is no try...",
+                "Do or do with note, there is no try...",
                 "Dont forget to save this note! To late I saved for you. XD",
                 "Do you remember the first note you write?",
                 "Remove the pain in the ice! Yes, ice! I dont want bad word here.",
@@ -267,7 +296,9 @@ namespace NotepadExpress
                 "Note today! Note tomorrow.",
                 "Better than your wife... Na!",
                 "Throw new... Note",
-                "Take a little snack!"
+                "Take a little snack!",
+                "Little thing matters!",
+                "Search this note, where is it!"
             };
 
             Random rnd = new Random();
@@ -317,6 +348,8 @@ namespace NotepadExpress
 
             string[] a_readLines = File.ReadAllLines(file, Encoding.GetEncoding(Encoding.Default.WebName));
             this.richTextBox1.Lines = a_readLines;
+            outputTextInTitle();
+            
         }
 
         private void addFileToText(string[] files)
@@ -331,6 +364,30 @@ namespace NotepadExpress
             this.richTextBox1.Lines = a_readLines;
             //this.richTextBox1.Select(this.richTextBox1.Text.Length - 1, 0);
             //this.richTextBox1.ScrollToCaret();
+
+            outputTextInTitle();
+        }
+
+        private void outputTextInTitle() {
+
+            // This function take the first 60 chars of the first line who have a starting letter
+
+            String sOutput = "";
+            foreach (string word in this.richTextBox1.Lines)
+            {
+                
+                if (Regex.Matches(word, @"[a-zA-Z]").Count != 0) {
+                    //Console.WriteLine(word.Substring(0, 1));
+                    sOutput = word;
+                    if (sOutput.Length > 60)
+                    {
+                    sOutput = word.Substring(0, 60); // Max 60 chars
+                    }
+                    break;
+                }
+            }
+
+            this.Text = sOutput+ " - " + sProgramName;
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -422,6 +479,7 @@ namespace NotepadExpress
                 sPathDelete = getPathFile();
             }
 
+           
             // This will delete the current note and exit
             DialogResult result = MessageBox.Show(
                 "Do you really want to delete this note '" + sPathDelete + "' ?",
@@ -434,8 +492,9 @@ namespace NotepadExpress
                 // We look for the file and delete it Then close
                 File.Delete(sPathDelete);
              }
- 
+             
             this.Dispose();
+           
         }
 
         private String getCurrentDateTime(Boolean bShowTime = true) { 
@@ -485,19 +544,13 @@ namespace NotepadExpress
             this.Activated += OnWindowActivated;
         }
 
-        [System.Runtime.InteropServices.DllImport("User32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr handle);
-        [System.Runtime.InteropServices.DllImport("User32.dll")]
-        private static extern bool ShowWindow(IntPtr handle, int nCmdShow);
-        [System.Runtime.InteropServices.DllImport("User32.dll")]
-        private static extern bool IsIconic(IntPtr handle);
 
-        const int SW_RESTORE = 9;
 
         private void OnWindowActivated(object sender, EventArgs e)
         {
             // Call when we focused on NoteExpress
             updateFunnyFact();
+
 
         }
 
@@ -526,6 +579,11 @@ namespace NotepadExpress
             //TODO: Open preference
             FormPreference formPreference = new FormPreference();
             formPreference.Show();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
         

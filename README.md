@@ -13,6 +13,9 @@ This is a notepad like to automatically save notes. A small project to understan
 ***Options*** menu, will add Date-time.
 > Note: Also in the preference when open a new note.
 
+# Better title
+Show the first 60 chars of letter detected
+
 # Command Line
 You can use command line also to open a file just like this :
 ```
