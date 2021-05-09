@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -41,15 +42,24 @@ namespace NotepadExpress
         public String sDefaultPath = "\\NoteExpress\\";
         private String sCurrentNamefile = "";
         private String sOpenFile = "";
-        private Timer SearchTextBoxTimer;
-        private Timer CloseAlreadyNoteTimer;
+
+        private System.Windows.Forms.Timer SearchTextBoxTimer;
+        private System.Windows.Forms.Timer CloseAlreadyNoteTimer;
         private String sUserDocPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         private int iFunnyFac = 0;
         private int iDelay = 500; // Delay after writting text
+        private ClassProcess classProcess = new ClassProcess(Process.GetProcessesByName("NoteExpress"));
+        Process currentProcess = null;
+        private bool bCloseAlreadyNoteTimerOn = false;
         
         public Form1(string[] args)
         {
+            // HideConsole
+            hideConsole();
+
+            // Init Component
             InitializeComponent();
+            currentProcess = Process.GetCurrentProcess();
 
             richTextBox1.Font = new Font(FontFamily.GenericMonospace, richTextBox1.Font.Size);
             System.IO.Directory.CreateDirectory(sUserDocPath + sDefaultPath);
@@ -58,23 +68,35 @@ namespace NotepadExpress
 
             sCurrentNamefile = date1.ToString("yyyy-MM-dd_HHmmss") + "";
             this.Text = sCurrentNamefile + " - " + sProgramName;
+            updateTextboxID(sCurrentNamefile);
             updateFunnyFact();
 
+            String sOpenFileProcess = "";
             if (args.Length != 0)
             {
-                
+
                 /*
                 for (int i = 0; i < args.Length; i++)
                 {
                     Console.WriteLine("args[{0}] == {1}", i, args[i]);
                 }
                  **/
-                
+
                 // args[0] = path to file
 
                 sOpenFile = args[0];
                 this.Text = sOpenFile + " - " + sProgramName;
+                updateTextboxID(sOpenFile);
                 addFileToText(args[0]);
+
+                // Save Process
+                sOpenFileProcess = sOpenFile;
+                
+            }
+            else {
+                // Save Process
+                sOpenFileProcess = sCurrentNamefile;
+                
             }
 
             // Check the preference if is on openAll
@@ -95,6 +117,13 @@ namespace NotepadExpress
             // If so open All Now
             //Console.WriteLine("Process: "+myProcess.Length);
             //Console.WriteLine("Process Note: "+iCount);
+            if (iCount == 0)
+            {
+                classProcess.resetProcessFile();
+            }
+            // Save current Process
+            this.classProcess.addToList(currentProcess.Id, sOpenFileProcess);
+            this.classProcess.saveFile();
 
             if (iCount == 0 && classPreference.getOpenAllAtStart())
             {
@@ -123,17 +152,30 @@ namespace NotepadExpress
                         break;
                 }
             }
+        }
 
+        private void updateTextboxID(String sID)
+        {
+            this.textBoxID.Text = sID;
+        }
+
+        private void showConsole()
+        {
+            // handle the console show/hide
+            var handle = GetConsoleWindow(); 
+
+            // Hide the console
+            ShowWindow(handle, SW_SHOW);
+
+        }
+
+        private void hideConsole()
+        {
             // handle the console show/hide
             var handle = GetConsoleWindow();
 
             // Hide the console
             ShowWindow(handle, SW_HIDE);
-
-            // Show the console
-            //ShowWindow(handle, SW_SHOW);
-
-
         }
 
         private void updateFunnyFact()
@@ -176,6 +218,12 @@ namespace NotepadExpress
             if (richTextBox1.TextLength > 0)
             {
                 richTextBox1.SaveFile(getPathFile(), RichTextBoxStreamType.PlainText);
+                String Path = classProcess.getPathById(currentProcess.Id);
+                // Save the PathFile if something change and we have not yet save the name file
+                if(!Path.ToLower().Contains(@"C:\")) 
+                {
+                    classProcess.setPathById(currentProcess.Id, getPathFile());
+                }
             }
             else if (sOpenFile == "")
             {
@@ -185,9 +233,11 @@ namespace NotepadExpress
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Delte from bin file
+            classProcess.deleteById(currentProcess.Id);
+
+            // Exit
             Application.Exit();
-            //Console.Write(sCurrentNamefile+"\n");
-            //this.Dispose();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -229,33 +279,72 @@ namespace NotepadExpress
 
         private void CloseAlreadyNoteTimer_Tick(object sender, EventArgs e)
         {
-            List<String> list = new List<String>();
+
+            // We pass the first check to let times to all noteExpress to update data
+            if (!bCloseAlreadyNoteTimerOn)
+            {
+                bCloseAlreadyNoteTimerOn = true;
+                return;
+            }
+
+            // Loop on our Process then check if already exist
+            List<String> lists = new List<String>();
+            List<int> toBeCloseIds = new List<int>();
             var myProcess = Process.GetProcessesByName("NoteExpress");
-            var myProcess2 = Process.GetProcessesByName("NoteExpress");
             for (int i = 0; i < myProcess.Length; i++)
             {
-                for (int z = 0; z < myProcess2.Length; z++)
-                {
-                    if (myProcess[i].Id != myProcess2[z].Id && myProcess[i].MainWindowTitle == myProcess2[z].MainWindowTitle)
-                    {
-                        if (!list.Contains(myProcess[z].MainWindowTitle))
+                String sPath = classProcess.getPathById(myProcess[i].Id);
+                if (!string.IsNullOrEmpty(sPath)) {
+
+                    // First do we have already it
+                    bool bInList = false;
+                    for (int y = 0; y < lists.Count; y++){
+
+                        if (lists[y].Contains(sPath))
                         {
-                            list.Add(myProcess[z].MainWindowTitle);
-                            //Console.WriteLine("Closing: " + myProcess[z].MainWindowTitle);
-                            myProcess[z].CloseMainWindow();
+                            bInList = true;
+                            break; // No need to got further we have one
                         }
+                    }
+
+                    
+                    if (!bInList)
+                    {
+                        // If false add to the list file
+                        lists.Add(sPath);
+                    }
+                    else {
+                        // Already exist will be force to exit
+                        toBeCloseIds.Add(myProcess[i].Id);
                     }
                 }
             }
 
+            // Now close all that already open
+            for (int i = 0; i < myProcess.Length; i++)
+            {
+                for (int y = 0; y < toBeCloseIds.Count; y++)
+                {
+                    if (myProcess[i].Id == toBeCloseIds[y])
+                    {
+                        myProcess[i].CloseMainWindow();
+                        Thread.Sleep(500);
+                    }
+                }   
+            }
+
+            
             CloseAlreadyNoteTimer.Stop();
             CloseAlreadyNoteTimer.Dispose();
             CloseAlreadyNoteTimer = null;
+            bCloseAlreadyNoteTimerOn = false;
+
+            /*
             if (File.Exists(getPathFile()))
             {
                 this.Dispose(); // If this note was already saved close it
             }
-
+             * */
         }
 
         private void SearchTextBoxTimer_Tick(object sender, EventArgs e)
@@ -298,7 +387,9 @@ namespace NotepadExpress
                 "Throw new... Note",
                 "Take a little snack!",
                 "Little thing matters!",
-                "Search this note, where is it!"
+                "Search this note, where is it!",
+                "Cowboy, Paperboy, note saved!",
+                "Congratulation, you keep your note."
             };
 
             Random rnd = new Random();
@@ -349,6 +440,7 @@ namespace NotepadExpress
             string[] a_readLines = File.ReadAllLines(file, Encoding.GetEncoding(Encoding.Default.WebName));
             this.richTextBox1.Lines = a_readLines;
             outputTextInTitle();
+            updateTextboxID(this.sOpenFile);
             
         }
 
@@ -366,6 +458,7 @@ namespace NotepadExpress
             //this.richTextBox1.ScrollToCaret();
 
             outputTextInTitle();
+            updateTextboxID(this.sOpenFile);
         }
 
         private void outputTextInTitle() {
@@ -416,11 +509,13 @@ namespace NotepadExpress
                 noteExpress.StartInfo.FileName = ProgramFilesx86() + sDefaultPath + "noteexpress.exe";
                 noteExpress.StartInfo.Arguments = " " + this.getFolderPath() + file.Name;
                 noteExpress.Start();
+
+                //Console.WriteLine(classProcess.getPathById(noteExpress.Id));
             }
 
             CloseAlreadyNoteTimer = new System.Windows.Forms.Timer();
             CloseAlreadyNoteTimer.Tick += new EventHandler(CloseAlreadyNoteTimer_Tick);
-            CloseAlreadyNoteTimer.Interval = 500;
+            CloseAlreadyNoteTimer.Interval = 500; // 1/2 sec
             CloseAlreadyNoteTimer.Start();
 
             // We dispose the current note if nothing in
@@ -491,8 +586,7 @@ namespace NotepadExpress
             {
                 // We look for the file and delete it Then close
                 File.Delete(sPathDelete);
-             }
-             
+            }
             this.Dispose();
            
         }
@@ -586,6 +680,6 @@ namespace NotepadExpress
 
         }
 
-        
+          
     }
 }
