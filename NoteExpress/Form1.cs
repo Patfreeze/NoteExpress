@@ -156,7 +156,7 @@ namespace NotepadExpress
 
         private void updateTextboxID(String sID)
         {
-            this.textBoxID.Text = sID;
+            this.textBoxID.Text = " "+sID;
         }
 
         private void showConsole()
@@ -474,7 +474,7 @@ namespace NotepadExpress
                     sOutput = word;
                     if (sOutput.Length > 60)
                     {
-                    sOutput = word.Substring(0, 60); // Max 60 chars
+                    sOutput = word.Substring(0, 60)+"..."; // Max 60 chars
                     }
                     break;
                 }

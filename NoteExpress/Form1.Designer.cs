@@ -269,16 +269,15 @@
             // 
             // textBoxID
             // 
-            this.textBoxID.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.textBoxID.BackColor = System.Drawing.Color.White;
             this.textBoxID.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxID.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBoxID.Enabled = false;
-            this.textBoxID.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.textBoxID.Font = new System.Drawing.Font("Times New Roman", 7.75F);
             this.textBoxID.Location = new System.Drawing.Point(0, 24);
             this.textBoxID.Margin = new System.Windows.Forms.Padding(5);
             this.textBoxID.Name = "textBoxID";
             this.textBoxID.ReadOnly = true;
-            this.textBoxID.Size = new System.Drawing.Size(478, 13);
+            this.textBoxID.Size = new System.Drawing.Size(478, 12);
             this.textBoxID.TabIndex = 3;
             this.textBoxID.WordWrap = false;
             // 
