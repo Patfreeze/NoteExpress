@@ -8,6 +8,8 @@ This is a notepad like to automatically save notes. A small project to understan
 
 ***Focus All*** menu, will bring all notes instances in front of other windows.
 
+***Search All*** menu, will search a word in all NoteExpress files saved.
+
 ***Delete+Exit*** menu, will destroy the file before exit the application. So be carefull if you open a text file with it.
 
 ***Options*** menu, will add Date-time.
@@ -18,7 +20,6 @@ Show the first 60 chars of letters detected
 
 ![image](https://user-images.githubusercontent.com/30989936/117084667-c078e900-ad15-11eb-944d-a96cb3a1c18e.png)
 
-
 # Command Line
 You can use command line also to open a file just like this :
 ```
@@ -28,4 +29,8 @@ Is this useful! I dont know but this command line exists lol. Maybe if someone a
 
 # How to install
 Just download the installer at https://github.com/Patfreeze/NoteExpress/tree/master/installer
+
+# Special thanks to
+Pēteris Ņikiforovs for https://github.com/pdonald/aho-corasick
+
 
