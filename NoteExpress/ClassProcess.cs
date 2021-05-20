@@ -135,11 +135,11 @@ namespace NoteExpress
 
             if (iCount >= iCountMax)
             {
-                Console.WriteLine("Failed to load after count of " + iCount);
+                //Console.WriteLine("Failed to load after count of " + iCount);
             }
             else
             {
-                Console.WriteLine("Loading after count of " + iCount);
+                //Console.WriteLine("Loading after count of " + iCount);
 
                 using (var stream = File.Open(getPreferenceFilename(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 using (var reader = XmlTextReader.Create(stream))
@@ -247,7 +247,7 @@ namespace NoteExpress
 
             if (iCount >= iCountMax)
             {
-                Console.WriteLine("Unable to save after count of " + iCount);
+                //Console.WriteLine("Unable to save after count of " + iCount);
             }
             else
             {

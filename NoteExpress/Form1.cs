@@ -17,8 +17,7 @@ using NoteExpress;
 
 namespace NotepadExpress
 {
-    
-
+   
     public partial class Form1 : Form
     {
 
@@ -152,6 +151,11 @@ namespace NotepadExpress
                         break;
                 }
             }
+
+            // Close note if 2 opened twice
+            Thread.Sleep(300);
+            this.closeIfAreadyNoteOpen();
+
         }
 
         private void updateTextboxID(String sID)
@@ -277,15 +281,7 @@ namespace NotepadExpress
             this.newFile();
         }
 
-        private void CloseAlreadyNoteTimer_Tick(object sender, EventArgs e)
-        {
-
-            // We pass the first check to let times to all noteExpress to update data
-            if (!bCloseAlreadyNoteTimerOn)
-            {
-                bCloseAlreadyNoteTimerOn = true;
-                return;
-            }
+        private void closeIfAreadyNoteOpen() {
 
             // Loop on our Process then check if already exist
             List<String> lists = new List<String>();
@@ -294,11 +290,13 @@ namespace NotepadExpress
             for (int i = 0; i < myProcess.Length; i++)
             {
                 String sPath = classProcess.getPathById(myProcess[i].Id);
-                if (!string.IsNullOrEmpty(sPath)) {
+                if (!string.IsNullOrEmpty(sPath))
+                {
 
                     // First do we have already it
                     bool bInList = false;
-                    for (int y = 0; y < lists.Count; y++){
+                    for (int y = 0; y < lists.Count; y++)
+                    {
 
                         if (lists[y].Contains(sPath))
                         {
@@ -307,13 +305,22 @@ namespace NotepadExpress
                         }
                     }
 
-                    
+
                     if (!bInList)
                     {
                         // If false add to the list file
                         lists.Add(sPath);
+
+                        // Focus note
+                        IntPtr handle = myProcess[i].MainWindowHandle;
+                        if (IsIconic(handle))
+                        {
+                            ShowWindow(handle, SW_RESTORE);
+                        }
+                        SetForegroundWindow(handle);
                     }
-                    else {
+                    else
+                    {
                         // Already exist will be force to exit
                         toBeCloseIds.Add(myProcess[i].Id);
                     }
@@ -328,16 +335,10 @@ namespace NotepadExpress
                     if (myProcess[i].Id == toBeCloseIds[y])
                     {
                         myProcess[i].CloseMainWindow();
-                        Thread.Sleep(500);
+                        Thread.Sleep(400);
                     }
-                }   
+                }
             }
-
-            
-            CloseAlreadyNoteTimer.Stop();
-            CloseAlreadyNoteTimer.Dispose();
-            CloseAlreadyNoteTimer = null;
-            bCloseAlreadyNoteTimerOn = false;
 
             /*
             if (File.Exists(getPathFile()))
@@ -345,6 +346,23 @@ namespace NotepadExpress
                 this.Dispose(); // If this note was already saved close it
             }
              * */
+        }
+
+        private void CloseAlreadyNoteTimer_Tick(object sender, EventArgs e)
+        {
+            // We pass the first check to let times to all noteExpress to update data
+            if (!bCloseAlreadyNoteTimerOn)
+            {
+                bCloseAlreadyNoteTimerOn = true;
+                return;
+            }
+            closeIfAreadyNoteOpen();
+
+            CloseAlreadyNoteTimer.Stop();
+            CloseAlreadyNoteTimer.Dispose();
+            CloseAlreadyNoteTimer = null;
+            bCloseAlreadyNoteTimerOn = false;
+           
         }
 
         private void SearchTextBoxTimer_Tick(object sender, EventArgs e)
@@ -389,7 +407,8 @@ namespace NotepadExpress
                 "Little thing matters!",
                 "Search this note, where is it!",
                 "Cowboy, Paperboy, note saved!",
-                "Congratulation, you keep your note."
+                "Congratulation, you keep your note.",
+                "Where I put this note, Search..."
             };
 
             Random rnd = new Random();
@@ -510,6 +529,8 @@ namespace NotepadExpress
                 noteExpress.StartInfo.Arguments = " " + this.getFolderPath() + file.Name;
                 noteExpress.Start();
 
+                // To avoid error file is currently busy by another process
+                Thread.Sleep(500);
                 //Console.WriteLine(classProcess.getPathById(noteExpress.Id));
             }
 
@@ -670,7 +691,6 @@ namespace NotepadExpress
 
         private void preferenceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO: Open preference
             FormPreference formPreference = new FormPreference();
             formPreference.Show();
         }
@@ -680,6 +700,11 @@ namespace NotepadExpress
 
         }
 
-          
+        private void searchAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormSearch formSearch = new FormSearch(this.getFolderPath(), ProgramFilesx86());
+            formSearch.Show();
+        }
+         
     }
 }
