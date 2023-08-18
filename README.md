@@ -10,7 +10,7 @@ This is a notepad like to automatically save notes. A small project to understan
 
 ***Search All*** menu, will search a word in all NoteExpress files saved.
 
-***Delete+Exit*** menu, will destroy the file before exit the application. So be carefull if you open a text file with it.
+***Delete+Exit*** menu, will destroy the file before exit the application. So be careful if you open a text file with it.
 
 ***Options*** menu, will add Date-time.
 > Note: Also in the preference when open a new note.
